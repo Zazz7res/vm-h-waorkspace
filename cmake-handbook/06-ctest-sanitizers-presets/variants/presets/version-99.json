@@ -1,0 +1,6 @@
+{
+  "version": 99,
+  "configurePresets": [
+    { "name": "dbg", "binaryDir": "${sourceDir}/out/dbg" }
+  ]
+}

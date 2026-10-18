@@ -1,0 +1,8 @@
+build/
+build-check/
+build-asan/
+build-cmake/
+*.o
+*.out
+*.dSYM/
+compile_commands.json

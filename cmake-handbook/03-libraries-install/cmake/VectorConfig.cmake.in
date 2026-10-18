@@ -1,0 +1,27 @@
+# =====================================================================
+# VectorConfig.cmake.in —— find_package(Vector) 真正加载的那个文件
+# =====================================================================
+# 它是**模板**：configure_package_config_file() 会处理 @PACKAGE_INIT@，
+# 结果装到 <前缀>/lib/cmake/Vector/VectorConfig.cmake。
+#
+# find_package(Vector) 的查找顺序（简化版）：
+#   ① 在若干变量给出的目录里找 VectorConfig.cmake 或 vector-config.cmake
+#      （CMAKE_PREFIX_PATH、Vector_ROOT、<P>_DIR 等）
+#   ② 找到任何一个，就去读同目录的 VectorConfigVersion.cmake 比对版本
+#   ③ 版本不兼容 → 报错（demo 第 8 节）；一个都没找到 → 报错（demo 第 4 节）
+#
+# @PACKAGE_INIT@ 展开后会做三件事，少了它整个「可搬迁的包」就塌了：
+#   ① 按这份文件**当前所在路径** + 生成时告诉它的 INSTALL_DESTINATION，
+#      反推出安装前缀 PACKAGE_PREFIX_DIR（所以前缀目录整体挪走也还能算对）
+#   ② 定义 set_and_check()：赋值同时检查路径真的存在，不存在就报配置错误
+#   ③ 定义 check_required_components()：处理 find_package(COMPONENTS ...)
+# =====================================================================
+
+@PACKAGE_INIT@
+
+# 真正「复活」target 的是这一句：它定义了 Vector::vector（以及 Vector::util，
+# 如果它被导出的话）这些 IMPORTED 目标，并把 -I<前缀>/include、链接哪个 .a/.so 填回去。
+# 用 ${CMAKE_CURRENT_LIST_DIR} 而不是写死路径 —— 因为这份文件会被装到别人机器上。
+include("${CMAKE_CURRENT_LIST_DIR}/VectorTargets.cmake")
+
+check_required_components(Vector)

@@ -1,0 +1,11 @@
+# 第 13 节红线扫描的数据文件：类名 <TAB> ERE 模式 <TAB> 该类的样本行（样本只给扫描器验「模式真能命中」，本章绝不执行任何一行）
+装或改定时任务	^ *crontab( |$)	crontab /tmp/我的计划
+驱动服务管理器	^ *systemctl( |$)	systemctl restart logrotate
+提权执行	^ *sudo( |$)	sudo rm -rf /var/log
+改 git 全局配置	git config --global	git config --global user.name 我
+碰私钥目录	\.ssh/	chmod 600 ~/.ssh/id_ed25519
+发起网络连接	^ *(curl|wget)( |$)	curl -s http://example.com/x
+开监听端口	^ *nc( |$)	nc -l -p 9999
+挂上别人的进程	^ *(strace|gdb) +-p( |$)	strace -p 12345
+删到家门外	rm -rf (/|~|\$HOME)( |$)	rm -rf ~
+改 shell 启动文件	>>?[ ]*~/?\.(bashrc|profile|zshrc)	echo 别名 >> ~/.bashrc

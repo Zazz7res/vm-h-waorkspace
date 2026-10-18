@@ -1,0 +1,12 @@
+# 这是 Config 模式的中枢。@PACKAGE_INIT@ 会被 configure_package_config_file
+# 展开成一段算好 PACKAGE_PREFIX_DIR 的代码（第 03 章第 4 节拆过它）。
+@PACKAGE_INIT@
+
+# 那句 STATUS 消息是本章故意加的"身份铭牌"：
+# 当一个包名既能被 Findmathx.cmake 找到、又能被这个文件找到时，
+# 看谁打印了这句话，就知道 find_package 到底走了哪条路。
+message(STATUS "[mathxConfig.cmake] Config 模式应答：${CMAKE_CURRENT_LIST_DIR}")
+
+include("${CMAKE_CURRENT_LIST_DIR}/mathxTargets.cmake")
+
+check_required_components(mathx)

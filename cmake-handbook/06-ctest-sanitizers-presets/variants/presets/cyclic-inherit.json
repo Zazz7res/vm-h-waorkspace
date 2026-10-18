@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "configurePresets": [
+    { "name": "a", "inherits": "b", "binaryDir": "${sourceDir}/out/a" },
+    { "name": "b", "inherits": "a", "binaryDir": "${sourceDir}/out/b" }
+  ]
+}

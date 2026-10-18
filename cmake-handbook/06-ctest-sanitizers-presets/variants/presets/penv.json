@@ -1,0 +1,21 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "env-lookup",
+      "displayName": "用 $env 读环境变量",
+      "binaryDir": "${sourceDir}/out/env-lookup",
+      "cacheVariables": {
+        "CH06_GREETING": "问候语来自 $env{CH06_GREETER}"
+      }
+    },
+    {
+      "name": "penv-lookup",
+      "displayName": "用 $penv 读环境变量",
+      "binaryDir": "${sourceDir}/out/penv-lookup",
+      "cacheVariables": {
+        "CH06_GREETING": "问候语来自 $penv{CH06_GREETER}"
+      }
+    }
+  ]
+}

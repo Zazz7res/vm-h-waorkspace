@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "dbg",
+      "binaryDir": "${sourceDir}/out/dbg",
+      "cat": "这个字段不在 schema 里"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "dbg",
+      "binaryDir": "${sourceDir}/out/dbg",
+      "condition": { "type": "banana", "lhs": "x", "rhs": "x" }
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": { "major": 3, "minor": 21, "patch": 0 },
+
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/out/${presetName}",
+      "cacheVariables": {
+        "CMAKE_C_STANDARD": "11",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+    {
+      "name": "dbg",
+      "displayName": "本地调试（Debug）",
+      "description": "继承 base：Debug + 构建目录自动落到 out/dbg",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CH06_TIMEOUT": "2",
+        "CH06_GREETING": "来自 preset dbg"
+      }
+    },
+    {
+      "name": "rel",
+      "displayName": "发布（Release）",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "asan",
+      "displayName": "带 ASan/UBSan 的调试构建",
+      "description": "继承 dbg，所以 Debug 那一堆变量一个都不重抄",
+      "inherits": "dbg",
+      "cacheVariables": {
+        "CH06_WITH_ASAN": "ON",
+        "CH06_UBSAN": "ON"
+      }
+    },
+    {
+      "name": "asan-static",
+      "displayName": "ASan + 静态 libasan",
+      "inherits": "asan",
+      "cacheVariables": {
+        "CH06_ASAN_STATIC": "ON"
+      }
+    },
+    {
+      "name": "only-linux",
+      "displayName": "condition：不是 Linux 就整条消失",
+      "inherits": "dbg",
+      "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Linux" }
+    },
+    {
+      "name": "tagged",
+      "displayName": "environment：给整条命令链注入环境变量",
+      "inherits": "dbg",
+      "environment": { "CH06_TAG": "preset 注入的" }
+    }
+  ],
+
+  "buildPresets": [
+    { "name": "dbg", "configurePreset": "dbg", "jobs": 4 },
+    { "name": "asan", "configurePreset": "asan", "jobs": 4 },
+    { "name": "tagged", "configurePreset": "tagged", "jobs": 4 }
+  ],
+
+  "testPresets": [
+    {
+      "name": "dbg",
+      "configurePreset": "dbg",
+      "output": { "outputOnFailure": true }
+    },
+    {
+      "name": "asan",
+      "configurePreset": "asan",
+      "output": { "outputOnFailure": true },
+      "filter": { "include": { "label": "asan" } }
+    },
+    {
+      "name": "tagged",
+      "configurePreset": "tagged",
+      "output": { "outputOnFailure": true },
+      "filter": { "include": { "name": "env_" } },
+      "environment": { "CH06_TAG": "test preset 注入的" }
+    }
+  ]
+}
